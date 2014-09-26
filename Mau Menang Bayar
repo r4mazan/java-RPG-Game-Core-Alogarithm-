@@ -1,0 +1,115 @@
+/* DDP Tutorial6
+ * Nama: Susetyo Romadhoni
+ * NPM : 1106068970
+ * Asisten Grader : Anjar
+*/
+
+import java.util.Random;
+import java.util.Scanner;
+
+public class MauMenangBayar {
+
+    /**
+     * @param args the command line arguments
+     */
+    private static final String SERANG="serang";
+    private static final String HEAL="heal";
+    private static final String DIAM="diam";
+    private static final String STATUS="status";
+    
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Masukkan nama Pahlawan");
+        Pemain player1 = new Pemain(scan.nextLine());
+        System.out.println("Masukkan nama Kakek Sihir");
+        Pemain player2 = new Pemain(scan.nextLine());
+        Random r = new Random();
+        int i = r.nextInt(2);
+        while (!win(player1, player2)) {
+            String tmp = "";
+            if (i == 0) {
+                System.out.println("Giliran " + player1.getNama());
+                System.out.println("Silahkan Masukkan Perintah");
+                tmp = scan.nextLine();
+                while (!validasi(tmp)) {
+                    System.out.println("Perintah tidak dikenali silahkan masukkan perintah kembali");
+                    tmp = scan.nextLine();
+                }
+                Action(tmp, player1, player2);
+            } else {
+                System.out.println("Giliran " + player2.getNama());
+                System.out.println("Silahkan Masukkan Perintah");
+                tmp = scan.nextLine();
+                while (!validasi(tmp)) {
+                    System.out.println("Perintah tidak dikenali silahkan masukkan perintah kembali");
+                    tmp = scan.nextLine();
+                }
+                Action(tmp, player2, player1);
+            }
+
+            if (!tmp.equalsIgnoreCase("status")) {
+                i = ++i % 2;
+            
+            }
+            if(win(player1,player2)){ 
+                if(player1.getHP()<=0)
+                    System.out.println(player2.getNama()+" Menang");
+                else 
+                    System.out.println(player1.getNama()+" Menang");
+                break;
+            }
+        }
+    }
+
+    /**
+     * Merupapakan method untuk memvalidasi command yang diberikan user. Command
+     * yang valid Serang, Diam, Heal, danStatus ignore case
+     *
+     * @param str perintah yang diberikan user.
+     * @return
+     */
+    public static boolean validasi(String str) {
+        // Isi dibagian ini
+        if(str.equalsIgnoreCase(SERANG)||str.equalsIgnoreCase(HEAL)||str.equalsIgnoreCase(DIAM)||str.equalsIgnoreCase(STATUS))
+            return true;
+        else
+            return false;
+    }
+
+    /**
+     * merupakan command yang dilakukan player baik terhadap dirinya maupun
+     * player lain.
+     *
+     * @param str String yang isinya antara lain Serang,Diam,Heal, atau status
+     * @param playerAct player yang melakukan action
+     * @param idlePlayer player yang dikenai action oleh playerAct
+     */
+    public static void Action(String str, Pemain playerAct, Pemain idlePlayer) {
+        System.out.println("===========================================");
+        if(str.equalsIgnoreCase(SERANG))
+            playerAct.serang(idlePlayer);
+        else if(str.equalsIgnoreCase(HEAL))
+            playerAct.Heal();
+        else if(str.equalsIgnoreCase(DIAM))
+            playerAct.Diam();
+        else if(str.equalsIgnoreCase(STATUS)){
+            playerAct.printStatus();
+            idlePlayer.printStatus();
+            System.out.println("===========================================");}
+    }
+
+    /**
+     * Mengecek apakah permainan sudah selesai.
+     *
+     * @param player1 pahlawan
+     * @param player2 kakek sihir
+     * @return
+     */
+    public static boolean win(Pemain player1, Pemain player2) {
+        if(player1.getHP()<=0||player2.getHP()<=0)
+            return true;
+        else
+            return false;
+    }
+
+}
