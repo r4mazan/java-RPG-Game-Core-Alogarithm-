@@ -1,0 +1,95 @@
+
+
+public class Pemain {
+
+    private String nama;
+    private int HP=30;
+    private int koin=20;
+    public final int biayaAttack = 5;
+    public final int biayaHeal = 3;
+    public final int biayaDiam = 0;
+    public final int attackPower = 5;
+    public final int healPower = 3;
+    public final int koinRecovery = 3;
+    public final int def_HP = 30;
+    public final int def_Koin = 20;
+
+    /**
+     * 1. Buat constructor dari kelas Pemain dengan parameter nama 
+     * 2. Buat getter setter untuk nama,HP dan koin
+     */
+    
+    /**
+     * Method untuk menyerang pemain lain, sebelum melakukan penyerangan dicek apakah koin yang ia miliki mencukupi
+     * @param lain
+     */
+    public Pemain(String pemain){
+        nama = pemain;
+    }
+    
+    public String getNama(){
+        return nama;
+    }
+    public int getKoin(){
+        return koin;
+    }
+    
+    public int getHP(){
+        return HP;
+        
+    }
+    public void setHP(int nyawa){
+        HP= nyawa;
+    }
+    
+    public void setKoin(int nyawa){
+        koin= nyawa;
+    }
+            
+    public void serang(Pemain lain) {
+        if(koin<biayaAttack){
+            System.out.println("Maaf koin tidak cukup, Anda Harus Diam");
+            Diam();   
+        }    
+        else{
+            setKoin(koin-biayaAttack);
+            lain.setHP(lain.HP-attackPower);
+            System.out.println(getNama()+" berhasil menyerang " + lain.getNama());
+            printStatus();
+            lain.printStatus();
+            System.out.println("===========================================");    
+        }    
+    }
+ /**
+     * Method untuk heal diri sendiri, sebelum melakukan heal dicek apakah koin yang ia miliki mencukupi
+     * @param 
+     */
+    public void Heal() {
+        if(getKoin()<biayaHeal){
+            System.out.println("Maaf koin tidak cukup, Anda Harus Diam");
+            Diam();}
+        else{ 
+            setHP(HP+healPower);
+            setKoin(koin-biayaHeal);
+            System.out.println(getNama()+" berhasil heal diri sendiri");
+            printStatus();
+        }
+        System.out.println("===========================================");
+    }
+    /**
+     * Method untuk diam, menambah koin sebanyak koinRecovery
+     */
+    public void Diam() {
+        setKoin(koin+koinRecovery);
+        System.out.println(nama +" Menghimpun pundi-pundi uang");
+        printStatus();
+        System.out.println("===========================================");
+    }
+/**
+ * mencetak status dari pemain berupa HP dan jumlah koinnya
+ */
+    public void printStatus() {
+        System.out.println(nama+" HP : "+HP+" Koin : "+koin);
+    }
+
+}
